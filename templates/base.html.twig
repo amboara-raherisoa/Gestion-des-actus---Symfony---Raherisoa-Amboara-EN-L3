@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+{# <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"> #}
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
+        {# {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
@@ -16,4 +16,178 @@
     <body>
         {% block body %}{% endblock %}
     </body>
+</html> #}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Gestion d'actualités{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
+        <!-- icheck bootstrap -->
+        <link rel="stylesheet" href="{{ asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
+        
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+
+    {% block body %}
+    <body class="hold-transition sidebar-mini">
+
+        <div class="wrapper">
+
+            <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <!-- Left navbar links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="{{ path('app_home') }}" class="nav-link active">Accueil</a>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="{{ path('admin') }}" class="nav-link">Espace d'administration</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Right navbar links -->
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white" href="{{ path('app_login') }}" role="button">
+                            Log in
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="{{ path('app_home') }}" class="brand-link">
+                <img src="{{ asset('assets/dist/img/AdminLTELogo.png') }}" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Gestion d'actualités</span>
+                </a>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+
+                    <!-- Sidebar user (optional) -->
+                    {% if app.user %}
+                        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                            <div class="image">
+                            <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                            </div>
+                            <div class="info">
+                                <a href="#" class="d-block">{{ app.user.username }}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                            with font-awesome or any other icon font library -->
+                        <li class="nav-item {% if nomPage == 'home' %}menu-open{% endif %}">
+                            <a href="{{ path('app_home') }}" class="nav-link {% if nomPage == 'home' %}active{% endif %}">
+                            <i class="nav-icon fas fa-newspaper"></i>
+                            <p>
+                                Actualités
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                            </a>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ path('app_home') }}" class="nav-link {% if nomPage == 'home' and not rubriqueSelectionnee is defined %}active{% endif %}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Toutes les actualités</p>
+                                    </a>
+                                </li>
+
+                                {% for rubrique in rubriques %}
+                                    <li class="nav-item">
+                                        <a href="{{ path('show_by_rubrique', {'id':rubrique.id}) }}" class="nav-link 
+                                            {% if rubriqueSelectionnee is defined %}
+                                                {% if rubrique.id == rubriqueSelectionnee.id %}active{% endif %}
+                                            {% endif %}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{ rubrique.intitule }}</p>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{ path('app_rubrique') }}" class="nav-link {% if nomPage == 'rubrique' %}active{% endif %}">
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>
+                                Rubriques
+                            </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ path('app_redacteur') }}" class="nav-link {% if nomPage == 'redacteur' %}active{% endif %}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Rédacteurs
+                            </p>
+                            </a>
+                        </li>
+
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+
+            {% block content_wrapper %}{% endblock %}
+            
+            <footer class="main-footer">
+                <div class="float-right d-none d-sm-block">
+                <b>Version</b> 1.0.0
+                </div>
+                <strong>Copyright &copy; 2022.</strong> Tous droits réservés.
+            </footer>
+
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+        </div>
+        <!-- ./wrapper -->
+
+    </body>
+    {% endblock %}
+
+    <!-- jQuery -->
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
 </html>

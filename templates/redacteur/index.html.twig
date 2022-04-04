@@ -1,0 +1,84 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Hello RedacteurController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ '/opt/lampp/htdocs/tests/premier_projet_symfony/src/Controller/RedacteurController.php'|file_link(0) }}">src/Controller/RedacteurController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/opt/lampp/htdocs/tests/premier_projet_symfony/templates/redacteur/index.html.twig'|file_link(0) }}">templates/redacteur/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %} #}
+
+{% extends 'base.html.twig' %}
+
+{% block content_wrapper %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+        <div class="col-sm-6">
+            <h3>Rédacteurs</h3>
+        </div>
+        </div>
+    </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            
+            <div class="col-md-6">
+                
+                <div class="card">
+                    
+                    <div class="card-body p-0">
+                        <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                            <th>Nom</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for redacteur in redacteurs %}
+                                <tr>
+                                <td>{{ redacteur.nom }}</td>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <!-- /.col -->  
+
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    > #}
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+
+    {# <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form>
+{% endblock %} #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion d'actualités | Log in{% endblock %}
+
+{% block body %}
+<body class="hold-transition login-page">
+
+  <div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="{{ path('app_home') }}" class="h1">Gestion d'<b>actualités</b></a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">
+
+          {% if error %}
+            <div class="alert alert-danger">Echec de la connexion<br></div>
+          {% endif %}
+
+          {% if app.user %}
+            <div class="mb-3">
+              Vous êtes connecté en tant que {{ app.user.username }}.<br><a href="{{ path('app_logout') }}">Se déconnecter<br></a>
+            </div>
+          {% else %}
+            <div class="mb-3 text-center">
+                Veuillez vous connecter
+              </div>
+          {% endif %}
+          
+        </p>
+
+        {% if not app.user %}
+        
+          <form method="post">
+
+          <div class="input-group mb-3">
+            <input  type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" autocomplete="email" required autofocus>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" autocomplete="current-password" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+          >
+
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+
+        {% endif %}
+        
+
+        <p class="m-1">
+          <a href="{{ path('app_home') }}">Retour à l'accueil</a>
+        </p>
+        
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+  <!-- /.login-box -->
+</body>
+{% endblock %}
